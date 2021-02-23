@@ -51,6 +51,8 @@ def update_book(request,id):
             return redirect('create')
         else:
             form = BookUpdateForm(request.POST, instance=book)
+            context = {}
+            context['form'] = form
             return render(request, 'bookapp/bookEdit.html', context)
     return render(request,'bookapp/bookEdit.html',context)
 

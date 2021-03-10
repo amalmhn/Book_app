@@ -14,7 +14,7 @@ def book_create(request):
     books = Book.objects.all()
     context['book'] = books
     if request.method == 'POST':
-        form  = BookCreateForm(request.POST)
+        form  = BookCreateForm(request.POST,request.FILES)
         if form.is_valid():
             form.save()
             return redirect('create')
@@ -45,12 +45,12 @@ def update_book(request,id):
     context['book'] = book
     context['form'] = form
     if request.method=='POST':
-        form = BookUpdateForm(request.POST,instance=book)
+        form = BookUpdateForm(request.POST,request.FILES,instance=book)
         if form.is_valid():
             form.save()
             return redirect('create')
         else:
-            form = BookUpdateForm(request.POST, instance=book)
+            form = BookUpdateForm(request.POST,request.FILES, instance=book)
             context = {}
             context['form'] = form
             return render(request, 'bookapp/bookEdit.html', context)
@@ -61,3 +61,11 @@ def update_book(request,id):
 def delete_book(request,id):
     book = Book.objects.get(id=id).delete()
     return redirect('create')
+
+#homepage
+'''get>html page with home'''
+def home(request):
+    book = Book.objects.all()
+    context = {}
+    context['book'] = book
+    return render(request,'bookapp/index.html',context)
